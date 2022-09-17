@@ -3,6 +3,8 @@ from http.client import PROCESSING
 from tabnanny import verbose
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.utils.text import slugify
+
 
 # Create your models here.
 class Product(models.Model):
@@ -15,6 +17,18 @@ class Product(models.Model):
     PROCoast = models.DecimalField(max_digits=5, decimal_places=2, verbose_name=_("Cost"))
     PROCreated = models.DateTimeField(verbose_name=_("Created At "))
     
+    PROSlug = models.SlugField(blank=True, null=True)
+    
+    
+    class Meta:
+        verbose_name = _('Product')
+        verbose_name_plural = _('Products')
+        
+    
+    def save(self, *args, **kwargs):
+        if not self.PROSlug :
+            self.PROSlug = slugify(self.PROName)
+        super(Product, self).save(*args, **kwargs)
     
     def __str__(self):
         return self.PROName
