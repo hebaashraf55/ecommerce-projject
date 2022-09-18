@@ -16,8 +16,8 @@ def product_list(request):
     
       
        
-def product_details(request, slug):
-    product_details = Product.objects.get(PROSlug=slug)
+def product_details(request, id):
+    product_details = Product.objects.get(id=id)
     context = {'product_details' : product_details}
     return render(request, 'Product/product_details.html' , context)
 

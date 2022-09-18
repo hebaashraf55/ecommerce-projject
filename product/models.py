@@ -14,8 +14,11 @@ class Product(models.Model):
     PRODiscription = models.TextField(max_length=1000, verbose_name=_("Product Description"))
     PROImg = models.ImageField(upload_to='product/', verbose_name=_("Image"), blank=True, null=True)
     PROPrice = models.DecimalField(max_digits=5, decimal_places=2, verbose_name=_("Price"))
+    PRODiscountPrice = models.DecimalField(max_digits=5, decimal_places=2, verbose_name=_("Discount Price"))
     PROCoast = models.DecimalField(max_digits=5, decimal_places=2, verbose_name=_("Cost"))
     PROCreated = models.DateTimeField(verbose_name=_("Created At "))
+    PROISNew = models.BooleanField(default=True)
+    PROISBestsaler = models.BooleanField(default=False)
     
     PROSlug = models.SlugField(blank=True, null=True)
     

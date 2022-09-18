@@ -31,23 +31,36 @@
           <div class="p-4">
 
             <div class="mb-3">
-              <a href="">
-                <span class="badge purple mr-1">Category 2</span>
-              </a>
-              <a href="">
-                <span class="badge blue mr-1">New</span>
-              </a>
-              <a href="">
-                <span class="badge red mr-1">Bestseller</span>
-              </a>
+
+              {% if product_details.PRODiscountPrice > 0 %}
+                  <a href="">
+                    <span class="badge green mr-1">SALE</span>
+                  </a>
+              {% endif %}
+
+              {% if product_details.PROISNew %}
+                <a href="">
+                  <span class="badge blue mr-1">New</span>
+                </a>
+              {% endif %}
+
+              {% if product_details.PROISBestsaler %}
+                <a href="">
+                  <span class="badge red mr-1">Bestseller</span>
+                </a>
+              {% endif %}
             </div>
             <p class="lead font-weight-bold">{{product_details.PROName }}</p>
 
             <p class="lead">
+              {% if product_details.PRODiscountPrice > 0%}
               <span class="mr-1">
-                <del>$200</del>
+                <del>${{product_details.PRODiscountPrice}}</del>
+                <span>${{product_details.PROPrice}}</span>
               </span>
+              {% else %}
               <span>${{product_details.PROPrice}}</span>
+              {% endif %}
             </p>
 
             <p class="lead font-weight-bold">{{product_details.PRODiscription}}</p>
