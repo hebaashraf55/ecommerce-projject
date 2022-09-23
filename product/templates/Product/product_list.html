@@ -90,7 +90,7 @@
                     </a>
                     <h5>
                       <strong>
-                        <a href="{% url 'products:product_details' product.id %}" class="dark-grey-text">{{product.PROName}}
+                        <a href="{{ product.get_absolute_url }}" class="dark-grey-text">{{product.PROName}}
                         </a>
                         <p>
                           {% if product.PRODiscountPrice > 0 %}
@@ -137,7 +137,7 @@
       <!--Section: Products v.3-->
 
 
-{% if product_list.has_other_pages %}
+  {% if product_list.has_other_pages %}
       <!--Pagination-->
       <nav class="d-flex justify-content-center wow fadeIn">
         <ul class="pagination pg-blue">
@@ -178,7 +178,7 @@
                 
         </ul>
       </nav>
- {% endif %}
+  {% endif %}
       <!--Pagination-->
 
     </div>

@@ -4,34 +4,40 @@ from tabnanny import verbose
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
+from django.urls import reverse
 
 
 # Create your models here.
 class Product(models.Model):
     PROName = models.CharField(max_length=50, verbose_name=_('Product Name'))
-    PROCategory = models.ForeignKey("Category", on_delete= models.CASCADE, blank=True, null=True, verbose_name=_('Product Category'))
-    PROBrand = models.ForeignKey('settings.Brand', on_delete= models.CASCADE ,blank=True, null=True,verbose_name=_('Product Brand'))
-    PRODiscription = models.TextField(max_length=1000, verbose_name=_("Product Description"))
+    PROCategory = models.ForeignKey("Category", on_delete= models.CASCADE, blank=True, null=True, verbose_name=_(' Category'))
+    PROBrand = models.ForeignKey('settings.Brand', on_delete= models.CASCADE ,blank=True, null=True,verbose_name=_(' Brand'))
+    PRODiscription = models.TextField(max_length=1000, verbose_name=_(" Description"))
     PROImg = models.ImageField(upload_to='product/', verbose_name=_("Image"), blank=True, null=True)
     PROPrice = models.DecimalField(max_digits=5, decimal_places=2, verbose_name=_("Price"))
     PRODiscountPrice = models.DecimalField(max_digits=5, decimal_places=2, verbose_name=_("Discount Price"))
     PROCoast = models.DecimalField(max_digits=5, decimal_places=2, verbose_name=_("Cost"))
     PROCreated = models.DateTimeField(verbose_name=_("Created At "))
-    PROISNew = models.BooleanField(default=True)
-    PROISBestsaler = models.BooleanField(default=False)
     
-    PROSlug = models.SlugField(blank=True, null=True)
+    PROISNew = models.BooleanField(default=True, verbose_name=_("New Product"))
+    PROISBestsaler = models.BooleanField(default=False, verbose_name=_("Best Seller Product"))
+    PROSlug = models.SlugField(blank=True, null=True, verbose_name=_("Product URL"))
     
+    
+    
+    def save(self, *args, **kwargs):
+        if not self.PROSlug :
+          self.PROSlug = slugify(self.PROName)
+        super(Product, self).save(*args, **kwargs)
+    
+    
+    def get_absolute_url(self):
+        return reverse('products:product_details', kwargs={"slug": self.PROSlug})
     
     class Meta:
         verbose_name = _('Product')
         verbose_name_plural = _('Products')
         
-    
-    def save(self, *args, **kwargs):
-        if not self.PROSlug :
-            self.PROSlug = slugify(self.PROName)
-        super(Product, self).save(*args, **kwargs)
     
     def __str__(self):
         return self.PROName
@@ -46,7 +52,7 @@ class ProductImage(models.Model):
     
 class Category(models.Model):
     CATName = models.CharField(max_length=50, verbose_name=_("Category Name"))
-    CATParent = models.ForeignKey("self", limit_choices_to={'CATParent__isnull': True},on_delete=models.CASCADE, blank=True, null=True)
+    CATParent = models.ForeignKey("self", limit_choices_to={'CATParent__isnull': True}, on_delete=models.CASCADE, blank=True, null=True)
     CATDesceiption = models.TextField(max_length=3000, verbose_name=_("Category Description"))
     CATImage = models.ImageField(upload_to="category/",verbose_name=_('Category Image'))
     

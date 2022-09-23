@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Product
 from django.core.paginator import Paginator
 from django.http import Http404
@@ -16,8 +16,10 @@ def product_list(request):
     
       
        
-def product_details(request, id):
-    product_details = Product.objects.get(id=id)
+def product_details(request, slug):
+    #product_details = Product.objects.get(PROSlug=slug)
+    
+    product_details = get_object_or_404(Product ,PROSlug=slug)
     context = {'product_details' : product_details}
     return render(request, 'Product/product_details.html' , context)
 
